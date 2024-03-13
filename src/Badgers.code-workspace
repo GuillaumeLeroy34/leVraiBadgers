@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../../Documents/Programmation/IOT/Badgers"
+		},
+		{
+			"name": "Badgers-etudiant",
+			"path": "../../Badgers-etudiant"
+		},
+		{
+			"name": "badgers",
+			"path": "../../badgers"
+		},
+		{
+			"name": "leVraiBadgers",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
