@@ -9,7 +9,7 @@
 
 #define buzzer D1
 #define rouge D2
-#define vert  D3
+#define vert D3
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 // Create MFRC522 instance.
@@ -64,13 +64,19 @@ void callback(char *topic, byte *payload, int length)
   if ((char)payload[0] == '0')
   {
     Serial.println("0 detecté, opinion refusé");
-    pinMode(buzzer,HIGH);
-    pinMode(rouge,HIGH);
+
+    digitalWrite(rouge, HIGH);
+    delay(500);
+    digitalWrite(rouge, LOW);
+    tone(buzzer,1500,50);
   }
   else if ((char)payload[0] == '1')
   {
     Serial.println("1 detecté, opinion validé");
-    pinMode(vert,HIGH);
+    digitalWrite(vert, HIGH);
+    delay(500);
+    digitalWrite(vert, LOW);
+    tone(buzzer,2000,50);
   }
 }
 
@@ -82,6 +88,15 @@ void setup()
   mfrc522.PCD_Init();                // Initiate MFRC522
   mfrc522.PCD_DumpVersionToSerial(); // Affichage des données de la bibliothèque
   Serial.println(F("Scan PICC to see UID, type, and data blocks..."));
+  pinMode(rouge, OUTPUT);
+  pinMode(vert, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(rouge, HIGH);
+  digitalWrite(vert, HIGH);
+
+  delay(1000);
+  digitalWrite(rouge, LOW);
+  digitalWrite(vert, LOW);
 
   // connexion au wifi, et au broker mqtt
   {
@@ -140,6 +155,7 @@ void loop()
   {
     return;
   }
+
   // Affichage des informations de la carte RFID
   // Serial.println(F("The NUID tag is:"));
   // Serial.print(F("In hex: "));
@@ -149,7 +165,5 @@ void loop()
   // printDec(mfrc522.uid.uidByte, mfrc522.uid.size);
 
   char *ms = (char *)mfrc522.uid.uidByte;
-
   client.publish("fx4431@gmail.com/badger", ms);
-  Serial.println();
 }
